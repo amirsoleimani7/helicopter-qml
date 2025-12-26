@@ -56,6 +56,3 @@ This project demonstrates advanced usage of **Qt Quick**, **Qt Quick Controls**,
 ![Helicopter QML Demo](ScreenShots/sample_working.gif)
 
 ---
-
-## 📂 Project Structure
-
