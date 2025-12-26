@@ -53,9 +53,7 @@ This project demonstrates advanced usage of **Qt Quick**, **Qt Quick Controls**,
 
 ## 🎬 Demo Video
 
-You can find a working demo video here:
-
-📁 `ScreenShots/sample_working.mp4`
+![Helicopter QML Demo](ScreenShots/sample_working.gif)
 
 ---
 
