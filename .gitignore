@@ -1,0 +1,30 @@
+# Build directories
+build/
+Heli-Release/
+Heli-Debug/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.ninja
+.ninja_log
+
+# Qt / Autogen
+*_autogen/
+Generated/
+qmlcache/
+.rcc/
+
+# Object & binary files
+*.obj
+*.o
+*.exe
+*.dll
+*.so
+*.a
+
+# IDE
+.vscode/
+.idea/

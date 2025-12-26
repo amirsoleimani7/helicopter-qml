@@ -1,0 +1,1799 @@
+
+
+/*
+This is a UI file (.ui.qml) that is intended to be edited in Qt Design Studio only.
+It is supposed to be strictly declarative and only uses a subset of QML. If you edit
+this file manually, you might introduce QML code that is not supported by Qt Design Studio.
+Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on .ui.qml files.
+*/
+import QtQuick
+import QtQuick.Controls
+import QtQuick3D
+import QtQuick3D.Effects
+import Heli
+import Generated.QtQuick3D.MD_902_Explorer
+import QtQuick3D.Helpers 6.7
+import QtQuick.Particles 2.0
+import QtQuick3D.SpatialAudio
+import QtQuick3D.Particles3D 6.7
+import QtQuick.Shapes 1.15
+import QtMultimedia
+
+Rectangle {
+    id: main
+    width: Constants.width
+    height: Constants.height
+    opacity: 1
+    visible: true
+    color: "transparent"
+    z: 0
+    property bool useVideoBackground: false
+
+    View3D {
+        id: view3D
+        anchors.fill: parent
+        anchors.leftMargin: 0
+        anchors.rightMargin: 0
+        anchors.topMargin: 0
+        anchors.bottomMargin: 0
+
+        CameraControl {
+            anchors.fill: view3D
+            targetCamera: sceneCamera
+        }
+
+        environment: sceneEnvironment
+
+        SceneEnvironment {
+            id: sceneEnvironment
+            backgroundMode: SceneEnvironment.Transparent
+            aoEnabled: true
+            antialiasingMode: SceneEnvironment.MSAA
+            antialiasingQuality: SceneEnvironment.High
+        }
+
+        Node {
+            id: scene
+            opacity: 1
+            visible: true
+            DirectionalLight {
+                id: directionalLight
+                x: 6.235
+                y: 869.611
+                visible: true
+                color: "#fffefb"
+                brightness: 1
+                eulerRotation.x: -90
+                eulerRotation.y: 0
+                z: 80.84913
+                ambientColor: "#ffffff"
+            }
+
+            PerspectiveCamera {
+                id: sceneCamera
+                x: -1008
+                y: 838
+                scale.x: 1
+                eulerRotation.z: 0
+                eulerRotation.y: -36
+                eulerRotation.x: -23
+                z: 1328
+            }
+
+            Md_902_Explorer {
+                id: md_902_Explorer
+                x: 0
+                y: 0
+                z: 0
+                rotarSpeed: rotarSpeedColumn.selectedSpeed
+                doorsOpen: doorsSwitch.checked
+            }
+
+            PointLight {
+                id: pointLight
+                x: -0.708
+                y: 29.499
+                color: "#fba80c"
+                scope: md_902_Explorer
+                quadraticFade: 10
+                brightness: _switch.checked ? 150 : 0 // Brightness is 500 if on, 0 if off
+
+                z: 27.64642
+            }
+
+            SpotLight {
+                id: spotlight
+                x: 1.129
+                y: 2618.534
+                visible: true
+                castsShadow: true
+                eulerRotation.x: -88
+                quadraticFade: 0.01675
+                brightness: 20
+                z: -4.75973
+            }
+        }
+    }
+
+    Image {
+        id: mainbackGroundImage
+        opacity: 1
+        visible: main.useVideoBackground
+        anchors.fill: parent
+        source: "Assets/backgrounds/obys.jpg"
+        scale: 1.4
+        z: -2
+        fillMode: Image.PreserveAspectFit
+    }
+
+    Video {
+        id: backgroundVideo
+        anchors.fill: parent
+        source: "Assets/backgrounds/moving_wallpaper/wallpaper.mp4"
+        autoPlay: true
+        loops: MediaPlayer.Infinite
+        fillMode: VideoOutput.PreserveAspectCrop
+        z: -2
+        visible: !main.useVideoBackground
+    }
+
+    Item {
+        id: __materialLibrary__
+        PrincipledMaterial {
+            id: defaultMaterial
+            objectName: "Default Material"
+            baseColor: "#4aee45"
+        }
+    }
+
+    Rectangle {
+        id: infoMenuRectangle
+        x: 1442
+        y: 4
+        width: 470
+        height: 1072
+        opacity: 1.0
+        radius: 20
+
+        color: !main.useVideoBackground ? "#222831" : "#767676"
+        border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff"
+        border.width: !main.useVideoBackground ? 2 : 1
+
+        Rectangle {
+            id: glowEffectmain12
+            anchors.fill: parent
+            radius: parent.radius
+            color: "transparent"
+            border.color: "#00FFF6"
+            border.width: 4
+            opacity: main.useVideoBackground ? 0.5 : 0
+            z: -1
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 300
+                }
+            }
+        }
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 300
+            }
+        }
+        Behavior on border.color {
+            ColorAnimation {
+                duration: 300
+            }
+        }
+
+        Rectangle {
+            id: info_fuelColumnContainter
+            x: 50
+            y: 17
+            width: 360
+            height: 52
+            radius: 10
+            color: !main.useVideoBackground ? "#222831" : "#767676"
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff"
+            border.width: 1
+
+            Rectangle {
+                id: glowEffect
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: info_fuelColumn
+                x: 28
+                y: 9
+                width: 360
+                height: 52
+
+                ProgressBar {
+                    id: progressBar_fuel
+                    width: 286
+                    height: 17
+                    value: 0.5
+                    indeterminate: false
+                    to: 80
+                }
+
+                Text {
+                    id: info_fuelText
+                    x: 72
+                    y: 100
+                    width: 112
+                    height: 18
+                    text: qsTr("Fuel Is At : ") + fuelSlicer.value.toFixed(2)
+                    font.pixelSize: 15
+                    font.bold: true
+                }
+            }
+        }
+
+        Rectangle {
+
+            id: info_battery_tempColumnContainer
+            x: 50
+            y: 75
+            width: 360
+            height: 159
+            radius: 10
+            color: !main.useVideoBackground ? "#222831" : "#767676"
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff"
+            border.width: 1
+
+            Rectangle {
+                id: glowEffect1
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: info_batterColumn
+                x: 8
+                y: 38
+                width: 178
+                height: 84
+
+                Image {
+                    id: info_imagePicture
+                    width: 178
+                    height: 84
+                    source: "Assets/icons/battery/empty-battery.png"
+                    sourceSize.height: 0
+                    sourceSize.width: 220
+                    fillMode: Image.PreserveAspectFit
+
+                    ProgressBar {
+                        id: info_batteryProgressBar
+                        x: 51
+                        y: 23
+                        width: 72
+                        height: 38
+                        value: batterySlider.value
+                        indeterminate: false
+                        to: 100
+                        background: Rectangle {
+                            color: "transparent"
+                            border.color: "black"
+                            border.width: 2
+                            radius: 5
+                        }
+                        contentItem: Rectangle {
+                            width: info_batteryProgressBar.visualPosition
+                                   * info_batteryProgressBar.width
+                            height: info_batteryProgressBar.height
+
+                            radius: 5
+
+                            color: Qt.rgba(
+                                       (100 - info_batteryProgressBar.value) / 100,
+                                       info_batteryProgressBar.value / 100, 0,
+                                       1)
+                        }
+                    }
+
+                    Text {
+                        id: info_barryPercentText
+                        x: 78
+                        y: 34
+                        text: batterySlider.value.toFixed(0) + qsTr(" %")
+                        font.pixelSize: 12
+                        font.bold: true
+                    }
+                }
+            }
+
+            Item {
+                x: 213
+                y: 30
+                width: 100
+                height: 100
+
+                // --- Indoor (Left) Progress Bar ---
+                CurvedProgressBar {
+                    id: outDoorProgress
+                    anchors.centerIn: parent
+                    width: 193
+                    height: 154
+                    strokeWidth: 20
+                    startAngle: 270
+                    totalSweep: 180
+                    value: (dial_outdoor_tempratue.value - dial_outdoor_tempratue.from)
+                           / (dial_outdoor_tempratue.to - dial_outdoor_tempratue.from)
+                    anchors.verticalCenterOffset: 0
+                    anchors.horizontalCenterOffset: 1
+                    // Interpolate from blue (cold) to red (warm):
+                    progressColor: Qt.rgba(value, 0, 1 - value, 1)
+                }
+
+                // --- Outdoor (Right) Progress Bar ---
+                CurvedProgressBar {
+                    id: inDoorProgress
+                    anchors.centerIn: parent
+                    width: 193
+                    height: 154
+                    strokeWidth: 20
+                    startAngle: 90
+                    totalSweep: 180
+                    value: (dial_indoor_temprature.value - dial_indoor_temprature.from)
+                           / (dial_indoor_temprature.to - dial_indoor_temprature.from)
+                    anchors.verticalCenterOffset: 0
+                    anchors.horizontalCenterOffset: 1
+                    progressColor: Qt.rgba(value, 0, 1 - value, 1)
+                }
+
+                // --- Overlay Your Dials (they appear on top of the progress bars) ---
+                Dial {
+                    id: dial_indoor_temprature
+                    anchors.centerIn: parent
+                    width: 138
+                    height: 118
+                    enabled: false
+                    inputMode: Dial.Circular
+                    to: 80
+                    from: -20
+                    endAngle: 0
+                    startAngle: -180
+                }
+
+                Dial {
+                    id: dial_outdoor_tempratue
+                    anchors.centerIn: parent
+                    width: 138
+                    height: 118
+                    focusPolicy: Qt.TabFocus
+                    enabled: false
+                    inputMode: Dial.Circular
+                    to: 80
+                    from: -20
+                    endAngle: 180
+                    startAngle: 0
+
+                    Text {
+                        id: info_indoorTempratue
+                        x: 29
+                        y: 45
+                        text: qsTr("IN")
+                        font.pixelSize: 12
+                    }
+
+                    Text {
+                        id: info_outdoorTempratue
+                        x: 86
+                        y: 45
+                        text: qsTr("OUT")
+                        font.pixelSize: 12
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: info_cam_light_control_RectangleContainer
+            x: 50
+            y: 240
+            width: 360
+            height: 152
+            radius: 10 // Smooth, rounded edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect2
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Rectangle {
+                id: info_cameraRectangle
+                x: 12
+                y: 17
+                width: 107
+                height: 103
+                radius: 20
+
+                opacity: errorButton.checked ? blinkValue : 1.0
+
+                // Change the fill color based on the radio buttons
+                color: if (goodButton.checked)
+                           "green"
+                       else if (warningButton.checked)
+                           "#EED202"
+                       else
+                           "#ED4337"
+
+                property real blinkValue: 1.0
+
+                NumberAnimation on blinkValue {
+                    id: cameraNumberAnimation
+                    from: 1.0
+                    to: 0.3
+                    duration: 500
+                    loops: Animation.Infinite
+                    running: errorButton.checked
+                }
+
+                Image {
+                    id: cameraImage
+                    x: 0
+                    y: 0
+                    width: 106
+                    height: 104
+                    source: "Assets/icons/battery/photo_camera_1000dp_E8EAED_FILL0_wght100_GRAD200_opsz48.png"
+                    fillMode: Image.PreserveAspectFit
+                }
+            }
+            Rectangle {
+                id: info_lightRectangle
+                x: 124
+                y: 17
+                width: 107
+                height: 103
+                radius: 20
+                // Bind the color to the switch’s checked property:
+                color: _switch.checked ? "#FFFF00" : "#000000" // Yellow when on, black when off
+
+                // Optional: animate the color change smoothly
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 300
+                    }
+                }
+
+                Image {
+                    id: lightImage
+                    width: 107
+                    height: 103
+                    source: "Assets/icons/light/lightbulb_1000dp_E8EAED_FILL0_wght100_GRAD200_opsz48.png"
+                    fillMode: Image.PreserveAspectFit
+                }
+            }
+
+            Rectangle {
+                id: info_ControlPanelRectangle
+                x: 241
+                y: 17
+                width: 107
+                height: 103
+                radius: 20
+
+                // Animate the color change based on the checkBox checked state
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 500 // Duration of the color change animation
+                        easing.type: Easing.InOutQuad // Smooth easing effect
+                    }
+                }
+
+                // Change the color based on the checkBox checked state
+                color: controlCheckBox.checked ? "green" : "red" // Green when checked, red when unchecked
+
+                Image {
+                    id: controlPanelImage
+                    width: 107
+                    height: 103
+                    source: "Assets/icons/control panel/icons8-control-panel-100.png"
+                    fillMode: Image.PreserveAspectFit
+                }
+            }
+        }
+        Rectangle {
+            id: info_speedRectangleContainer
+            x: 50
+            y: 398
+            width: 360
+            height: 135
+            radius: 10 // Smooth, rounded edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect3
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Rectangle {
+                id: info_speedRectangle
+                x: 15
+                y: 4
+                width: 331
+                height: 126
+                color: "#ffffff"
+                // Text to show the speed from the dial
+                opacity: 1.0 // Set full opacity for the background; you can adjust as needed.
+                radius: 20 // Rounded corners for a smooth edge
+
+                // Use a vertical gradient from medium gray to dark gray.
+                gradient: Gradient {
+                    GradientStop {
+                        position: 0.0
+                        color: "#777777"
+                    } // Lighter gray at the top.
+                    GradientStop {
+                        position: 1.0
+                        color: "#333333"
+                    } // Darker gray at the bottom.
+                }
+                Text {
+                    id: speedText
+                    anchors.centerIn: parent
+                    color: "#000000"
+                    text: qsTr("Speed: ") + speedDial.value.toFixed(
+                              0) // Show dial value as text
+                    font.pixelSize: 48 // Big font size
+                    font.bold: true // Bold font for emphasis
+                }
+            }
+        }
+        Rectangle {
+            id: info_radioRectangleContainer
+            x: 50
+            y: 539
+            width: 360
+            height: 150
+            radius: 10 // Smooth, rounded edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect4
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            // Signal strength images (only one is visible at a time)
+            Image {
+                id: weak
+                width: parent.width
+                height: parent.height
+                source: "Assets/icons/wifi/wifi-v2/Weak.png"
+                fillMode: Image.PreserveAspectFit
+                visible: lowSignal.checked
+            }
+
+            Image {
+                id: good
+                width: parent.width
+                height: parent.height
+                source: "Assets/icons/wifi/wifi-v2/Good.png"
+                fillMode: Image.PreserveAspectFit
+                visible: mediumSignal.checked
+            }
+
+            Image {
+                id: strong
+                width: parent.width
+                height: parent.height
+                source: "Assets/icons/wifi/wifi-v2/Strong.png"
+                fillMode: Image.PreserveAspectFit
+                visible: highSignal.checked
+            }
+
+            Text {
+                id: info_radioText
+                x: 14
+                y: 14
+                color: "#fffafa"
+                text: qsTr("Radio")
+                font.pixelSize: 18
+                font.bold: true
+            }
+            Component.onCompleted: lowSignal.checked = true
+        }
+
+        TextArea {
+            id: descriptionText
+            x: 50
+            y: 695
+            width: 360
+            height: 233
+            placeholderText: qsTr("Text Area")
+            text: qsTr(
+                      "Md_902 Explorer\n\n" + "• Manufacturer: MD Helicopters\n"
+                      + "• Year of Manufacture: 1990\n" + "• Maximum Altitude: 20,000 feet\n"
+                      + "• Maximum Wind Resistance: 80 knots\n\n"
+                      + "The MD 902 Explorer is a versatile, high-performance helicopter designed for both commercial and military applications, offering excellent altitude capabilities and wind resistance for varied operational environments.")
+            wrapMode: TextArea.Wrap
+            font.bold: true
+            font.pointSize: 10
+            color: !main.useVideoBackground ? "#00FFF6" : "#000000" // Sci-fi neon blue for video mode
+            padding: 10
+            readOnly: true
+
+            background: Rectangle {
+                id: textBackground
+                color: !main.useVideoBackground ? "#222831" : "#f0f0f0" // Dark sci-fi mode when video is active
+                radius: 10
+                border.color: !main.useVideoBackground ? "#00FFF6" : "#cccccc" // Neon blue for sci-fi mode
+                border.width: 1
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 300
+                    }
+                }
+                Behavior on border.color {
+                    ColorAnimation {
+                        duration: 300
+                    }
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        id: controlMenuRectangle
+        visible: false
+        x: 0
+        y: 0
+        z: 0
+        width: 552
+        height: 1080
+        opacity: 1.0 // Set full opacity for the background; you can adjust as needed.
+        radius: 20 // Rounded corners for a smooth edge
+
+        color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+        border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+        border.width: !main.useVideoBackground ? 2 : 1
+
+        // Sci-fi glow effect
+        Rectangle {
+            id: glowEffectmain1
+            anchors.fill: parent
+            radius: parent.radius
+            color: "transparent"
+            border.color: "#00FFF6"
+            border.width: 4
+            opacity: main.useVideoBackground ? 0.5 : 0
+            z: -1
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 300
+                }
+            }
+        }
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 300
+            }
+        }
+        Behavior on border.color {
+            ColorAnimation {
+                duration: 300
+            }
+        }
+        Rectangle {
+            id: fuelColumnontainer
+            x: 28
+            y: 150
+            width: 248
+            height: 119
+            radius: 10 // Rounded corners for smooth edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect5
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: fuelColumn
+                // Fill the container with some margins for padding
+                anchors.fill: parent
+                anchors.margins: 10
+                spacing: 20
+
+                Text {
+                    id: fuelText
+                    text: "Fuel :"
+                    color: "white"
+                    font.pixelSize: 18
+                    horizontalAlignment: Text.AlignLeft
+                    font.bold: true
+                    width: parent.width
+                    height: 25
+                }
+
+                Slider {
+                    id: fuelSlicer
+                    width: parent.width * 0.8
+                    height: 24
+                    from: 0.0
+                    to: 80
+                    // Set a proper default value (for example, 40)
+                    value: 40
+                    // Uncomment and ensure that progressBar_fuel is defined if needed:
+                    onValueChanged: progressBar_fuel.value = fuelSlicer.value
+                }
+            }
+        }
+
+        Rectangle {
+            id: batteryColumnContainer
+            x: 282
+            y: 150
+            width: 248
+            height: 119
+            radius: 10
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect6
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: batteryColumn
+                x: 3
+                y: 10
+                width: 212
+                height: 119
+                spacing: 20
+
+                Text {
+                    id: batteryText
+                    x: 0
+                    y: 0
+                    text: "Battery :"
+                    color: "white"
+                    font.pixelSize: 18
+                    horizontalAlignment: Text.AlignLeft
+                    leftPadding: 6
+                    topPadding: 2
+                    font.bold: true
+                    width: parent.width
+                    height: 25
+                }
+
+                Slider {
+                    id: batterySlider
+                    width: parent.width * 0.8
+                    height: 24
+                    from: 0.0
+                    to: 100
+                    value: 0
+                    onValueChanged: info_batteryProgressBar.value = batterySlider.value
+                }
+            }
+        }
+        Rectangle {
+            id: tempColumnContainer
+            x: 28
+            y: 275
+            width: 248
+            height: 181
+            visible: true
+            radius: 10 // Rounded corners for smooth edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect7
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: tempColumn
+                anchors.fill: parent
+                spacing: 10 // Optional spacing between items
+
+                Text {
+                    id: outDoorText
+                    x: 17
+                    y: 7
+                    color: "#ffffff"
+                    text: qsTr("Outdoor Temprature")
+                    font.pixelSize: 18
+                    horizontalAlignment: Text.AlignLeft
+                    topPadding: 7
+                    font.bold: true
+
+                    SpinBox {
+                        id: outDoorSpinBox
+                        x: 17
+                        y: 36
+                        editable: true
+                        antialiasing: false
+                        font.bold: true
+                        to: 80
+                        from: -20
+                        onValueChanged: dial_outdoor_tempratue.value = outDoorSpinBox.value
+                    }
+                }
+
+                Text {
+                    id: indoorText
+                    x: 21
+                    y: 0
+                    height: 80
+                    color: "#fcfcfc"
+                    text: qsTr("Indoor Temprature")
+                    font.pixelSize: 18
+                    font.bold: true
+                    topPadding: 58
+                    leftPadding: 0
+
+                    SpinBox {
+                        id: inDoorSpinBox
+                        x: 12
+                        y: 85
+                        editable: true
+                        layer.smooth: true
+                        font.bold: true
+                        to: 80
+                        from: -20
+                        onValueChanged: dial_indoor_temprature.value = inDoorSpinBox.value
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: cameraColumnContainer
+            x: 282
+            y: 275
+            width: 248
+            height: 181
+            radius: 10 // Smooth, rounded edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect8
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: cameraColumn
+                anchors.fill: parent
+                anchors.margins: 10
+                anchors.leftMargin: 12
+                anchors.rightMargin: 8
+                anchors.topMargin: 8
+                anchors.bottomMargin: 12 // Optional margin for inner spacing
+                spacing: 10 // Space between elements
+
+                Text {
+                    id: cameraText
+                    color: "#ffffff"
+                    text: qsTr("Fixed Camera")
+                    font.pixelSize: 18
+                    font.bold: true
+                }
+
+                ButtonGroup {
+                    id: optionGroup
+                } // Ensures only one is selected
+
+                RadioButton {
+                    id: goodButton
+                    // text: "Good"
+                    icon.color: "#e5fefefe"
+
+                    font.bold: true
+                    font.pointSize: 10
+                    checked: true // Default selected option
+                    ButtonGroup.group: optionGroup
+
+                    Text {
+                        id: _text9
+                        x: 60
+                        y: 10
+                        color: "#ffffff"
+                        text: qsTr("Good")
+                        font.pixelSize: 15
+                        font.bold: true
+                    }
+                }
+
+                RadioButton {
+                    id: warningButton
+                    // text: "Warning"
+                    icon.color: "#e5fefefe"
+                    font.bold: true
+                    font.pointSize: 10
+                    ButtonGroup.group: optionGroup
+
+                    Text {
+                        id: _text10
+                        x: 60
+                        y: 10
+                        color: "#ffffff"
+                        text: qsTr("Warning")
+                        font.pixelSize: 15
+                        font.bold: true
+                    }
+                }
+
+                RadioButton {
+                    id: errorButton
+                    // text: "Error"
+                    font.bold: true
+                    icon.color: "#e5fefefe"
+                    font.pointSize: 10
+                    ButtonGroup.group: optionGroup
+
+                    Text {
+                        id: _text11
+                        x: 60
+                        y: 10
+                        color: "#ffffff"
+                        text: qsTr("Error")
+                        font.pixelSize: 15
+                        font.bold: true
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: light_controlColumnsContainer
+            x: 28
+            y: 462
+            width: 502
+            height: 69
+            radius: 10 // Smooth, rounded edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect11
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: lightsColumn
+                x: 39
+                y: 9
+                width: 203
+                height: 48
+
+                Switch {
+                    id: _switch
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 18
+                    icon.height: 0
+                    icon.width: 0
+                    icon.source: "Assets/icons/light/lightbulb_1000dp_E8EAED_FILL0_wght100_GRAD200_opsz48.png"
+                    display: AbstractButton.TextOnly
+
+                    Text {
+                        id: _text
+                        x: 76
+                        y: 10
+                        color: "#ffffff"
+                        text: qsTr("Lights")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+            }
+
+            Column {
+                id: controlColumn
+                x: 248
+                y: 21
+                width: 232
+                height: 48
+
+                CheckBox {
+                    id: controlCheckBox
+                    x: 0
+                    y: 0
+                    width: 194
+                    height: 17
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 18
+
+                    // Override the indicator to have rounded corners and a custom check mark
+                    indicator: Rectangle {
+                        id: indicatorRect
+                        width: 20
+                        height: 20
+                        radius: 5 // Rounded corners for smoother edges
+                        border.width: 2
+                        border.color: controlCheckBox.checked ? "#009688" : "#ffffff"
+                        color: controlCheckBox.checked ? "#009688" : "transparent"
+
+                        // Check mark displayed when the checkbox is checked
+                        Text {
+                            width: 20
+                            anchors.centerIn: parent
+                            visible: controlCheckBox.checked
+                            text: "\u2713" // Unicode check mark
+                            color: "white"
+                            font.pixelSize: 16
+                        }
+                    }
+
+                    Text {
+                        id: _text1
+                        x: 47
+                        y: -4
+                        color: "#ffffff"
+                        text: qsTr("Control Panle")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: speedColumnContainer
+            x: 28
+            y: 536
+            width: 502
+            height: 250
+            radius: 10 // Smooth, rounded edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect9
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: speedColumn
+                x: 29
+                y: 29
+                width: 190
+                height: 191
+
+                Dial {
+                    id: speedDial
+                    Behavior on value {
+                        NumberAnimation {
+                            duration: 300
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
+
+                    Text {
+                        id: _text7
+                        x: 67
+                        y: 80
+                        color: "#ffffff"
+                        text: qsTr("Speed")
+                        font.pixelSize: 18
+                        horizontalAlignment: Text.AlignHCenter
+                        font.bold: true
+                    }
+                    to: 220
+                }
+            }
+
+            Column {
+                id: rotarSpeedColumn
+                x: 276
+                y: 43
+                width: 200
+                height: 215
+
+                RadioButton {
+                    id: slowestButton
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 16
+
+                    Text {
+                        id: _text2
+                        x: 60
+                        y: 11
+                        color: "#ffffff"
+                        text: qsTr("Slowest")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+
+                RadioButton {
+                    id: slowButton
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 16
+
+                    Text {
+                        id: _text3
+                        x: 61
+                        y: 12
+                        color: "#ffffff"
+                        text: qsTr("Slow")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+
+                RadioButton {
+                    id: mediumButton
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 16
+
+                    Text {
+                        id: _text4
+                        x: 59
+                        y: 12
+                        color: "#ffffff"
+                        text: qsTr("Medium")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+
+                RadioButton {
+                    id: fastButton
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 16
+
+                    Text {
+                        id: _text5
+                        x: 61
+                        y: 12
+                        color: "#ffffff"
+                        text: qsTr("Fast")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+
+                RadioButton {
+                    id: fastestButton
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 16
+
+                    Text {
+                        id: _text6
+                        x: 60
+                        y: 10
+                        color: "#ffffff"
+                        text: qsTr("Fastest")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+
+                // Ensures only one button can be selected at a time
+                ButtonGroup {
+                    id: speedButtonGroup
+                    exclusive: true
+                    buttons: [slowestButton, slowButton, mediumButton, fastButton, fastestButton]
+                }
+
+                property int selectedSpeed: (slowestButton.checked ? 1350 : slowButton.checked ? 900 : mediumButton.checked ? 650 : fastButton.checked ? 500 : fastestButton.checked ? 300 : 500)
+            }
+        }
+        Text {
+            id: mainRotarText
+            x: 301
+            y: 552
+            width: 150
+            height: 23
+            color: "#ffffff"
+            text: qsTr("Main Rotar Speed")
+            font.pixelSize: 18
+            horizontalAlignment: Text.AlignHCenter
+            font.bold: true
+        }
+        Rectangle {
+            id: radioColumnContainer
+            x: 28
+            y: 792
+            width: 248
+            height: 162
+            radius: 10 // Smooth, rounded edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect12
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: radioColumn
+                x: 8
+                y: 0
+                width: 200
+                height: 162
+                Text {
+                    id: textRadio
+                    y: 0
+                    color: "#ffffff"
+                    text: qsTr("Radio")
+                    rightPadding: 124
+                    leftPadding: 3
+                    font.preferShaping: true
+                    font.kerning: true
+                    font.bold: true
+                    font.pointSize: 18
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                ButtonGroup {
+                    id: signalButtonGroup
+                    exclusive: true
+                }
+
+                RadioButton {
+                    id: lowSignal
+                    font.pointSize: 14
+                    font.bold: true
+                    ButtonGroup.group: signalButtonGroup
+
+                    Text {
+                        id: _text8
+                        x: 50
+                        y: 8
+                        color: "#ffffff"
+                        text: qsTr("Weak")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+
+                RadioButton {
+                    id: mediumSignal
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 14
+                    ButtonGroup.group: signalButtonGroup
+
+                    Text {
+                        id: _text12
+                        x: 50
+                        y: 8
+                        color: "#ffffff"
+                        text: qsTr("Good")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+
+                RadioButton {
+                    id: highSignal
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 14
+                    ButtonGroup.group: signalButtonGroup
+
+                    Text {
+                        id: _text13
+                        x: 50
+                        y: 8
+                        color: "#ffffff"
+                        text: qsTr("Strong")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: doorColumnContainer
+            x: 282
+            y: 792
+            width: 248
+            height: 162
+            radius: 10 // Smooth, rounded edges
+            color: !main.useVideoBackground ? "#222831" : "#767676" // Sci-fi dark mode when video is active
+            border.color: !main.useVideoBackground ? "#00FFF6" : "#ffffff" // Neon blue for sci-fi
+            border.width: 1
+
+            // Outer glow simulation using an extra Rectangle
+            Rectangle {
+                id: glowEffect13
+                anchors.fill: parent
+                radius: parent.radius
+                color: "transparent"
+                border.color: "#00FFF6"
+                border.width: 1
+                opacity: main.useVideoBackground ? 0.7 : 0
+                z: -1 // Puts the glow behind the main rectangle
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 300
+                }
+            }
+
+            Column {
+                id: doorColumn
+                x: 0
+                y: 57
+                width: 248
+                height: 97
+
+                Switch {
+                    id: doorsSwitch
+                    x: 70
+                    y: 0
+                    text: qsTr("")
+                    font.bold: true
+                    font.pointSize: 18
+
+                    Text {
+                        id: _text14
+                        x: 90
+                        y: 10
+                        color: "#ffffff"
+                        text: qsTr("Door")
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+            } // Optional border width
+        }
+
+        Switch {
+            id: change_theme_button
+            x: 370
+            y: 48
+            text: qsTr("")
+            onClicked: main.useVideoBackground = !main.useVideoBackground
+
+            Text {
+                id: _text15
+                x: 71
+                y: 8
+                color: "#ffffff"
+                text: qsTr("Theme")
+                font.pixelSize: 18
+                font.bold: true
+            }
+        }
+    }
+
+    Button {
+        id: settingsButton
+        objectName: "settingsButton"
+        x: 20
+        y: 16
+        width: 92
+        height: 92
+        text: qsTr("Settings")
+        checkable: false
+        display: AbstractButton.IconOnly
+        // icon.source: "Assets/icons/settings/icons8-settings-500.svg"
+        icon.height: 100
+        icon.width: 100
+        background: Rectangle {
+            color: "transparent" // Remove background
+        }
+
+        Image {
+            id: settingsButtonShadow
+            source: "Assets/icons/settings/settings.png"
+            anchors.verticalCenterOffset: 1
+            anchors.horizontalCenterOffset: 0
+            width: 93
+            height: 93
+            anchors.centerIn: parent
+            opacity: 0.1 // Soft shadow effect
+            smooth: true
+            scale: 1.05 // Slightly larger than the icon
+        }
+        contentItem: Image {
+            id: iconImage
+            source: "Assets/icons/settings/settings.png"
+            width: 100
+            height: 100
+            anchors.centerIn: parent
+        }
+    }
+
+    Switch {
+        id: show_infoSwitch
+        x: 1860
+        y: 65
+        width: 56
+        height: 19
+        rotation: -90
+        icon.height: 30
+        icon.width: 27
+        display: AbstractButton.IconOnly
+
+        Image {
+            id: infoHideImage
+            x: 58
+            y: 0
+            width: 32
+            height: 24
+            source: "Assets/icons/show_info/eye_off.png"
+            fillMode: Image.PreserveAspectFit
+            visible: show_infoSwitch.checked // Hide when switch is ON
+        }
+
+        Image {
+            id: infoShowImage
+            x: 58
+            y: 0
+            width: 32
+            height: 24
+            source: "Assets/icons/show_info/eye_on.png"
+            fillMode: Image.PreserveAspectFit
+            visible: !show_infoSwitch.checked // Show when switch is ON
+        }
+    }
+
+    Text {
+        id: displayTimeText
+        x: 912
+        y: 0
+        width: 48
+        height: 16
+        color: "#ffffff"
+        text: qsTr("")
+        font.pixelSize: 18
+        font.bold: true
+    }
+
+    Timer {
+        id: timerDisplayTime
+        interval: 1000
+        running: true
+        repeat: true
+        onTriggered: displayTimeText.text = Qt.formatTime(new Date(),
+                                                          "hh:mm:ss")
+    }
+
+    SettingsControl {
+        id: settingsControl
+        anchors.fill: settingsButton
+        targetButton: settingsButton
+        targetRectangle: controlMenuRectangle
+    }
+
+    InfoControl {
+        id: infoControl
+        anchors.fill: show_infoSwitch
+        targetButton: show_infoSwitch
+        targetRectangle: infoMenuRectangle
+    }
+}
+
+/*##^##
+Designer {
+    D{i:0;matPrevEnvDoc:"SkyBox";matPrevEnvValueDoc:"preview_studio";matPrevModelDoc:"#Sphere"}
+D{i:4;cameraSpeed3d:25;cameraSpeed3dMultiplier:1}
+}
+##^##*/
+
